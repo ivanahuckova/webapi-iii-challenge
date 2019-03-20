@@ -1,5 +1,8 @@
 const express = require('express');
 const userDb = require('./data/helpers/userDb');
+const md = require('./middleware');
+
+const nameCheck = md.nameCheck;
 
 const routes = express.Router();
 
@@ -29,7 +32,7 @@ routes.get('/:id', async (req, res) => {
 
 // ========== POST ROUTES ========== //
 
-routes.post('/', async (req, res) => {
+routes.post('/', nameCheck, async (req, res) => {
   try {
     const user = await userDb.insert(req.body);
     if (user) {
