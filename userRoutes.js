@@ -34,15 +34,13 @@ routes.get('/:id', async (req, res) => {
 
 routes.post('/', nameCheck, async (req, res) => {
   try {
-    const user = await userDb.insert(req.body);
-    if (user) {
-      res.status(200).json(user);
-    } else {
-      res.status(404).json({ message: 'You need to add name' });
-    }
+    const newUser = await userDb.insert({ name: req.body.name });
+    res.status(200).json(newUser);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// ========== DELETE ROUTES ========== //
 
 module.exports = routes;
