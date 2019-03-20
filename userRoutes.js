@@ -47,8 +47,26 @@ routes.delete('/:id', async (req, res) => {
     const { id } = req.params;
     const deleteUser = await userDb.remove(id);
     console.log(deleteUser);
-    if (deleteUser === 1) {
+    if (deleteUser) {
       res.status(200).json(`Deleted user with id ${id}`);
+    } else {
+      res.status(404).json({ message: `User with id ${id} does not exists` });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// ========== UPDATE ROUTES ========== //
+routes.put('/:id', nameCheck, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    const updateUser = await userDb.update(id, { name: name });
+    console.log(updateUser);
+    if (updateUser) {
+      res.status(200).json(`Update user with id ${id} to name ${name}`);
     } else {
       res.status(404).json({ message: 'User with that id does not exists' });
     }
