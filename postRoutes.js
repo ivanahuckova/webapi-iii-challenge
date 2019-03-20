@@ -82,11 +82,15 @@ routes.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { text } = req.body;
 
-    const updatePost = await postDb.update(id, { text: text });
-    if (updatePost) {
-      res.status(200).json({ message: `Post with id ${id} was updated with following text: ${text}` });
+    if (!text) {
+      res.status(400).json({ message: "You need to include 'text' in the request" });
     } else {
-      res.status(400).json({ message: `Post with that id ${id} does not exists` });
+      const updatePost = await postDb.update(id, { text: text });
+      if (updatePost) {
+        res.status(200).json({ message: `Post with id ${id} was updated with following text: ${text}` });
+      } else {
+        res.status(400).json({ message: `Post with that id ${id} does not exists` });
+      }
     }
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
