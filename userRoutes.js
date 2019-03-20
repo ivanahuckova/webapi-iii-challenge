@@ -30,6 +30,20 @@ routes.get('/:id', async (req, res) => {
   }
 });
 
+routes.get('/:id/posts', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const getAllComments = await userDb.getUserPosts(id);
+    if (getAllComments.length > 0) {
+      res.status(200).json(getAllComments);
+    } else {
+      res.status(404).json({ message: 'User with that id does not exists' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // ========== POST ROUTES ========== //
 
 routes.post('/', nameCheck, async (req, res) => {
