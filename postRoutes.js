@@ -28,4 +28,14 @@ routes.get('/:id', async (req, res) => {
 
 // ========== POST ROUTES ========== //
 
+routes.post('/', async (req, res) => {
+  try {
+    const { user_id, text } = req.body;
+    const newPost = await postDb.insert({ user_id, text });
+    res.status(200).json(newPost);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = routes;
