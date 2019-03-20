@@ -42,5 +42,19 @@ routes.post('/', nameCheck, async (req, res) => {
 });
 
 // ========== DELETE ROUTES ========== //
+routes.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteUser = await userDb.remove(id);
+    console.log(deleteUser);
+    if (deleteUser === 1) {
+      res.status(200).json(`Deleted user with id ${id}`);
+    } else {
+      res.status(404).json({ message: 'User with that id does not exists' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 module.exports = routes;
