@@ -2,7 +2,6 @@ const express = require('express');
 const postDb = require('./data/helpers/postDb');
 
 const routes = express.Router();
-routes.use(express.json());
 
 // ========== GET ROUTES ========== //
 routes.get('/', async (req, res) => {
@@ -20,7 +19,7 @@ routes.get('/:id', async (req, res) => {
     if (post) {
       res.status(200).json(post);
     } else {
-      res.status(400).json({ message: 'Post with that id does not exists' });
+      res.status(404).json({ message: 'Post with that id does not exists' });
     }
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
